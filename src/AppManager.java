@@ -24,7 +24,8 @@ public class AppManager {
 
     File schedulePDF;
 
-    //TODO This is a test
+
+    int minimumLength = 1;
 
 
     /**
@@ -70,7 +71,7 @@ public class AppManager {
     }
 
     public void findCommonTime(ArrayList<Course> courseList){
-        int [][] timeTable = new int[24][7];
+        int [][] timeTable = new int[7][24];
 
         for (Course course : courseList){
 
@@ -86,27 +87,27 @@ public class AppManager {
 
             for (String day : course.Days){
                 switch (day){
-                    case "Monday": timeTable[startCoef][0] = 1;
-                        if (midCoef != 0){timeTable[midCoef][0] = 1;}
-                        timeTable[endCoef][0] = 1; break;
-                    case "Tuesday":timeTable[startCoef][1] = 1;
-                        if (midCoef != 0){timeTable[midCoef][1] = 1;}
-                        timeTable[endCoef][1] = 1; break;
-                    case "Wednesday":timeTable[startCoef][2] = 1;
-                        if (midCoef != 0){timeTable[midCoef][2] = 1;}
-                        timeTable[endCoef][2] = 1; break;
-                    case "Thursday":timeTable[startCoef][3] = 1;
-                        if (midCoef != 0){timeTable[midCoef][3] = 1;}
-                        timeTable[endCoef][3] = 1; break;
-                    case "Friday":timeTable[startCoef][4] = 1;
-                        if (midCoef != 0){timeTable[midCoef][4] = 1;}
-                        timeTable[endCoef][4] = 1; break;
-                    case "Saturday":timeTable[startCoef][5] = 1;
-                        if (midCoef != 0){timeTable[midCoef][5] = 1;}
-                        timeTable[endCoef][5] = 1; break;
-                    case "Sunday":timeTable[startCoef][6] = 1;
-                        if (midCoef != 0){timeTable[midCoef][6] = 1;}
-                        timeTable[endCoef][6] = 1; break;
+                    case "Monday": timeTable[0][startCoef] = 1;
+                        if (midCoef != 0){timeTable[0][midCoef] = 1;}
+                        timeTable[0][endCoef] = 1; break;
+                    case "Tuesday":timeTable[1][startCoef] = 1;
+                        if (midCoef != 0){timeTable[1][midCoef] = 1;}
+                        timeTable[1][endCoef] = 1; break;
+                    case "Wednesday":timeTable[2][startCoef] = 1;
+                        if (midCoef != 0){timeTable[2][midCoef] = 1;}
+                        timeTable[2][endCoef] = 1; break;
+                    case "Thursday":timeTable[3][startCoef] = 1;
+                        if (midCoef != 0){timeTable[3][midCoef] = 1;}
+                        timeTable[3][endCoef] = 1; break;
+                    case "Friday":timeTable[4][startCoef] = 1;
+                        if (midCoef != 0){timeTable[4][midCoef] = 1;}
+                        timeTable[4][endCoef] = 1; break;
+                    case "Saturday":timeTable[5][startCoef] = 1;
+                        if (midCoef != 0){timeTable[5][midCoef] = 1;}
+                        timeTable[5][endCoef] = 1; break;
+                    case "Sunday":timeTable[6][startCoef] = 1;
+                        if (midCoef != 0){timeTable[6][midCoef] = 1;}
+                        timeTable[6][endCoef] = 1; break;
                     default: break;
                 }
             }
