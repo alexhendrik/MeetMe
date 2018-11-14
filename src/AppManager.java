@@ -76,6 +76,10 @@ public class AppManager {
         System.out.println("The program status has been reset");
     }
 
+    /**
+     * This method builds a 2D array of all of the courses provided by courseList and finds all of the empty time sections that are larger than minimum length.
+     * @param courseList This is the list of all the courses that are passed into the method
+     */
     public void findCommonTime(ArrayList<Course> courseList){
         int [][] timeTable = new int[7][24];
 
@@ -157,7 +161,7 @@ public class AppManager {
                 }
 
 
-                System.out.print(x[y] + " ");//TODO IT HITS THE END OF THE ROW AND IS NOT SURE WHAT TO DO
+                System.out.print(x[y] + " ");
             }
             System.out.println();
         }
