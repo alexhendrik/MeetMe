@@ -24,6 +24,8 @@ public class AppManager {
 
     File schedulePDF;
 
+    //TODO This is a test
+
 
     /**
      * This method is called by the GUI to initialize an instance of the Loader class and proceed with identifying the user's schedule.
