@@ -233,18 +233,18 @@ public class CalendarView extends Application {
         Label endTimeLabel = new Label("End Time:");
         Label daysLabel = new Label("Days:");
 
-        customPane.setConstraints(courseLabel, 2, 1);
-        customPane.setConstraints(startTimeLabel, 2, 2);
-        customPane.setConstraints(endTimeLabel, 2, 3);
-        customPane.setConstraints(daysLabel, 2, 4);
+        GridPane.setConstraints(courseLabel, 2, 1);
+        GridPane.setConstraints(startTimeLabel, 2, 2);
+        GridPane.setConstraints(endTimeLabel, 2, 3);
+        GridPane.setConstraints(daysLabel, 2, 4);
 
         TextField courseBox = new TextField("e.g. Baseball Practice, Sleep, ...");
         TextField startTimeBox = new TextField("e.g. 9:00 AM, 1:00 PM, ...");
         TextField endTimeBox = new TextField("e.g. 9:00 AM, 1:00 PM, ...");
 
-        customPane.setConstraints(courseBox, 4, 1);
-        customPane.setConstraints(startTimeBox, 4, 2);
-        customPane.setConstraints(endTimeBox, 4, 3);
+        GridPane.setConstraints(courseBox, 4, 1);
+        GridPane.setConstraints(startTimeBox, 4, 2);
+        GridPane.setConstraints(endTimeBox, 4, 3);
 
         CheckBox monCheck = new CheckBox("Monday");
         CheckBox tueCheck = new CheckBox("Tuesday");
@@ -254,13 +254,13 @@ public class CalendarView extends Application {
         CheckBox satCheck = new CheckBox("Saturday");
         CheckBox sunCheck = new CheckBox("Sunday");
 
-        customPane.setConstraints(monCheck, 4, 4);
-        customPane.setConstraints(tueCheck, 4, 5);
-        customPane.setConstraints(wedCheck, 4, 6);
-        customPane.setConstraints(thuCheck, 4, 7);
-        customPane.setConstraints(friCheck, 4, 8);
-        customPane.setConstraints(satCheck, 4, 9);
-        customPane.setConstraints(sunCheck, 4, 10);
+        GridPane.setConstraints(monCheck, 4, 4);
+        GridPane.setConstraints(tueCheck, 4, 5);
+        GridPane.setConstraints(wedCheck, 4, 6);
+        GridPane.setConstraints(thuCheck, 4, 7);
+        GridPane.setConstraints(friCheck, 4, 8);
+        GridPane.setConstraints(satCheck, 4, 9);
+        GridPane.setConstraints(sunCheck, 4, 10);
 
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
         checkBoxes.add(monCheck);
@@ -273,7 +273,7 @@ public class CalendarView extends Application {
 
         Button confirmButton = new Button("Submit");
 
-        customPane.setConstraints(confirmButton, 4, 12);
+        GridPane.setConstraints(confirmButton, 4, 12);
 
         customPane.getChildren().addAll(courseLabel, startTimeLabel, endTimeLabel, daysLabel);
         customPane.getChildren().addAll(courseBox, startTimeBox, endTimeBox, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, confirmButton);
