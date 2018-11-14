@@ -19,6 +19,8 @@ public class AppManager {
     public ArrayList<Course> userCourseList = new ArrayList<Course>();
     public ArrayList<Course> groupCourseList = new ArrayList<>();
 
+    public ArrayList<Integer> freeTimeList = new ArrayList<>();
+
     String userName;
     String userID;
 
@@ -26,6 +28,10 @@ public class AppManager {
 
 
     int minimumLength = 1;
+
+
+    int tempStartTime;
+    int tempEndTime;
 
 
     /**
@@ -116,12 +122,41 @@ public class AppManager {
 
         for (int[] x : timeTable)
         {
-
-            for (int y : x)
+            int count = 0;
+            for (int y = 0; y < 24; y++)
             {
-                System.out.print(y + " ");
+
+                if (y == 0){
+
+                    count++;
+                    if(count == 1) {
+                        tempStartTime = y * 100;
+                    }
+                } else if (y == 1){
+
+                    if (count >= minimumLength){
+
+                        tempEndTime = y * 100;
+
+                        freeTimeList.add(tempStartTime, tempEndTime);
+
+                        tempStartTime = 0;
+                        tempEndTime = 0;
+
+
+                    }
+
+                    count = 0;
+                }
+
+
+                System.out.print(x[y] + " ");
             }
             System.out.println();
+        }
+
+        for (int a = 0; a < freeTimeList.size(); a++){
+            System.out.println(freeTimeList.get(a));
         }
 
         //return new Course("blank", 1);
