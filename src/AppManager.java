@@ -126,19 +126,20 @@ public class AppManager {
             for (int y = 0; y < 24; y++)
             {
 
-                if (y == 0){
+                if (x[y] == 0){
 
                     count++;
                     if(count == 1) {
                         tempStartTime = y * 100;
                     }
-                } else if (y == 1){
+                } else if (x[y] == 1){
 
                     if (count >= minimumLength){
 
                         tempEndTime = y * 100;
 
-                        freeTimeList.add(tempStartTime, tempEndTime);
+                        freeTimeList.add(tempStartTime);
+                        freeTimeList.add(tempEndTime);
 
                         tempStartTime = 0;
                         tempEndTime = 0;
