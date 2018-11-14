@@ -132,6 +132,12 @@ public class AppManager {
                     if(count == 1) {
                         tempStartTime = y * 100;
                     }
+
+                    if (y == 23){
+                        tempEndTime = 2400;
+                        freeTimeList.add(tempStartTime);
+                        freeTimeList.add(tempEndTime);
+                    }
                 } else if (x[y] == 1){
 
                     if (count >= minimumLength){
@@ -151,7 +157,7 @@ public class AppManager {
                 }
 
 
-                System.out.print(x[y] + " ");
+                System.out.print(x[y] + " ");//TODO IT HITS THE END OF THE ROW AND IS NOT SURE WHAT TO DO
             }
             System.out.println();
         }
@@ -160,7 +166,6 @@ public class AppManager {
             System.out.println(freeTimeList.get(a));
         }
 
-        //return new Course("blank", 1);
     }
 
 
