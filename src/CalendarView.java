@@ -1,25 +1,19 @@
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**
@@ -36,6 +30,7 @@ public class CalendarView extends Application {
     @Override
     public void start(Stage primaryStage) {
         manager = new AppManager();
+        manager.connectDatabase();
     primaryStage.setTitle("Meet.me");
     //StackPane stk = new StackPane();
     BorderPane border = new BorderPane();

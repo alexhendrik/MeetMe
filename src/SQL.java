@@ -1,9 +1,7 @@
-import java.sql.*;
-import java.sql.DriverManager;
 public class SQL {
 
 
-        public static void main (String[] args){
+        /*public static void main (String[] args){
 
             int number = 1;
 
@@ -23,7 +21,7 @@ public class SQL {
                 System.out.println("Something went wrong.");
             }
         }
-
+*/
     }
 
 

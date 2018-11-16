@@ -1,8 +1,8 @@
-import javafx.application.Application;
-
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
@@ -62,6 +62,35 @@ public class AppManager {
             isSetup = true;
 
     }
+
+
+    public void connectDatabase (){
+
+        int number = 1;
+
+
+
+        try {
+
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            /*Statement stmt = con.createStatement();
+
+            String SQL = "SELECT TOP " + number + " * FROM dbo.nameTable";
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                System.out.println(rs.getString("FirstName") + " " + rs.getString("LastName") + " " + rs.getInt("StudentID"));
+            }*/
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 
     /**
