@@ -1,8 +1,6 @@
-import javafx.application.Application;
-
 import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
@@ -64,6 +62,35 @@ public class AppManager {
     }
 
 
+    public void connectDatabase (){
+
+        int number = 1;
+
+
+
+        try {
+
+            Class<?> driverClass = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            String SQL = "SELECT TOP " + number + " * FROM dbo.nameTable";
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                System.out.println(rs.getString("FirstName") + " " + rs.getString("LastName") + " " + rs.getInt("StudentID"));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
     /**
      * This method is used to start the process of resetting the software settings to default.
      */
@@ -76,6 +103,10 @@ public class AppManager {
         System.out.println("The program status has been reset");
     }
 
+    /**
+     * This method builds a 2D array of all of the courses provided by courseList and finds all of the empty time sections that are larger than minimum length.
+     * @param courseList This is the list of all the courses that are passed into the method
+     */
     public void findCommonTime(ArrayList<Course> courseList){
         int [][] timeTable = new int[7][24];
 
@@ -157,7 +188,7 @@ public class AppManager {
                 }
 
 
-                System.out.print(x[y] + " ");//TODO IT HITS THE END OF THE ROW AND IS NOT SURE WHAT TO DO
+                System.out.print(x[y] + " ");
             }
             System.out.println();
         }
