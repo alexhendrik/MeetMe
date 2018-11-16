@@ -10,5 +10,19 @@
     <orderEntry type="library" name="pdfbox-app-2.0.11" level="project" />
     <orderEntry type="library" name="mssql-jdbc-7.0.0.jre10" level="project" />
     <orderEntry type="library" name="mssql-jdbc-7.0.0.jre8" level="project" />
+    <orderEntry type="library" name="sqljdbc41" level="project" />
+    <orderEntry type="module-library">
+      <library name="JavaFX 11">
+        <CLASSES>
+          <root url="file://C:/Program Files/Java/javafx-sdk-11.0.1/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://C:/Program Files/Java/javafx-sdk-11.0.1/lib" />
+        </SOURCES>
+        <jarDirectory url="file://C:/Program Files/Java/javafx-sdk-11.0.1/lib" recursive="false" />
+        <jarDirectory url="file://C:/Program Files/Java/javafx-sdk-11.0.1/lib" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
