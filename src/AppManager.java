@@ -1,5 +1,8 @@
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 
@@ -23,6 +26,7 @@ public class AppManager {
     String userID;
 
     File schedulePDF;
+    Connection con;
 
 
     int minimumLength = 1;
@@ -57,37 +61,12 @@ public class AppManager {
 
             findCommonTime(userCourseList);
 
+            uploadSchedule(userCourseList);
+
             isSetup = true;
 
     }
 
-
-    public void connectDatabase (){
-
-        int number = 1;
-
-
-
-        try {
-
-            Class<?> driverClass = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
-
-            Statement stmt = con.createStatement();
-
-            String SQL = "SELECT TOP " + number + " * FROM dbo.nameTable";
-            ResultSet rs = stmt.executeQuery(SQL);
-
-            while (rs.next()) {
-                System.out.println(rs.getString("FirstName") + " " + rs.getString("LastName") + " " + rs.getInt("StudentID"));
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-    }
 
 
 
@@ -101,6 +80,38 @@ public class AppManager {
         userName = "";
         loader.reset();
         System.out.println("The program status has been reset");
+    }
+
+    public void uploadSchedule(ArrayList<Course> schedule){
+
+        try {
+
+            Class<?> driverClass = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            for(Course course : schedule){
+                String dayString = "";
+                for(String day : course.Days){
+                    dayString += " " + day;
+                }
+                String insertSQL = "INSERT INTO dbo.Courses " + " VALUES (" + course.courseID + ", " + course.courseString + ", " + course.startTime + ", " + course.endTime + ", " + userID + ")";
+                stmt.executeQuery(insertSQL);
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
+    public void syncSchedule(){
+
     }
 
     /**

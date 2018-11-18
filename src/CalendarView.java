@@ -30,7 +30,6 @@ public class CalendarView extends Application {
     @Override
     public void start(Stage primaryStage) {
         manager = new AppManager();
-        manager.connectDatabase();
     primaryStage.setTitle("Meet.me");
     //StackPane stk = new StackPane();
     BorderPane border = new BorderPane();
