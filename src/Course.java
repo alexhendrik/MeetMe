@@ -40,6 +40,15 @@ public class Course implements Comparable<Course> {
 		Days = days;
 	}
 
+
+	/**
+	 * This is a constructor used in downloading the courses from the database.
+	 * @param course
+	 * @param days
+	 * @param start
+	 * @param end
+	 * @param id
+	 */
 	public Course(String course, String days, int start, int end, int id){
 
 		courseID = course;

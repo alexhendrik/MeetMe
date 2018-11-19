@@ -75,6 +75,11 @@ public class AppManager {
         System.out.println("The program status has been reset");
     }
 
+
+    /**
+     * This method uploads the user's schedule to the database.
+     * @param schedule The arraylist of user's courses to be uploaded.
+     */
     public void uploadSchedule(ArrayList<Course> schedule){
 
         try {
@@ -108,6 +113,10 @@ public class AppManager {
 
     }
 
+
+    /**
+     * This method downloads and creates course objects based on the information in the database.
+     */
     public void syncSchedule(){
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
@@ -132,6 +141,10 @@ public class AppManager {
         }
     }
 
+
+    /**
+     * This method removes all of the given user's courses from the database.
+     */
     public void resetData(){
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
