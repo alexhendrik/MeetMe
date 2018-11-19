@@ -55,11 +55,6 @@ public class AppManager {
                 x.timeConvert();
                 //System.out.println("The military time is :" + x.startTime + " " + x.endTime);
             }
-
-            findCommonTime(userCourseList);
-
-            uploadSchedule(userCourseList);
-
             isSetup = true;
 
     }
@@ -76,6 +71,7 @@ public class AppManager {
         userID = "";
         userName = "";
         loader.reset();
+        resetData();
         System.out.println("The program status has been reset");
     }
 
@@ -98,6 +94,8 @@ public class AppManager {
                         "VALUES ('" + course.courseID + "', '" + course.courseString + "', '" + course.startTime + "', '" + course.endTime + "', '" + userID + "')";
                 stmt.executeUpdate(insertSQL);
             }
+
+            System.out.println("The schedule has been successfully uploaded!");
 
             con.close();
 
@@ -125,7 +123,25 @@ public class AppManager {
                 groupCourseList.add(course);
             }
 
+            findCommonTime(userCourseList);
+
+            System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetData(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID + " ";
+            stmt.executeQuery(SQL);
+
+            System.out.println("The user data has been successfully deleted from the database!");
         }catch (SQLException e) {
             e.printStackTrace();
         }
