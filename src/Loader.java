@@ -166,7 +166,7 @@ public class Loader implements DepartmentData {
 			
 			if (x != null) {
 			System.out.println(x.courseID);
-			System.out.println(x.courseDays);//TODO use switch statement in the UI to select the location of the rectangle based on the day
+			System.out.println(x.courseDays);
 			System.out.println(x.courseTime);
 			System.out.println("-------------------------------------------------------------------------------------");
 			}
@@ -242,8 +242,6 @@ public class Loader implements DepartmentData {
 		loader = this;
 		runDetect(schedulePDF);
 		runUserDetect(studentInfo);
-		/*System.out.println("The student ID number is " + userID);
-		System.out.println("The student's name is " + userName);*/
 	}
 
 

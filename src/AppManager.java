@@ -11,27 +11,17 @@ public class AppManager {
 
     public boolean isSetup = false;
     Loader loader;
-
     CalendarView gui;
-
     public ArrayList<Course> userCourseList = new ArrayList<Course>();
     public ArrayList<Course> groupCourseList = new ArrayList<>();
-
     public ArrayList<Integer> freeTimeList = new ArrayList<>();
-
     String userName;
     String userID;
-
     File schedulePDF;
     Connection con;
-
-
     int minimumTime = 1;
-
-
     int tempStartTime;
     int tempEndTime;
-
 
     /**
      * This method is called by the GUI to initialize an instance of the Loader class and proceed with identifying the user's schedule.
@@ -45,7 +35,6 @@ public class AppManager {
                 throw new IndexOutOfBoundsException("The software has already been activated, please reset it if you want to change the schedule");
             }
             loader = new Loader(file);
-            //File file = new File("C:\\Users\\Alexh\\Desktop\\EclipseWorkspace\\SE 300\\ER_SCHED_PRT.pdf");
             userCourseList = loader.getCourseList();
             userName = loader.getUserName();
             userID = loader.getUserID();
@@ -53,14 +42,10 @@ public class AppManager {
             System.out.println("The student's name is " + userName);
             for (Course x : userCourseList){
                 x.timeConvert();
-                //System.out.println("The military time is :" + x.startTime + " " + x.endTime);
             }
             isSetup = true;
 
     }
-
-
-
 
     /**
      * This method is used to start the process of resetting the software settings to default.
@@ -153,7 +138,7 @@ public class AppManager {
 
             Statement stmt = con.createStatement();
 
-            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID + " ";
+            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID;
             stmt.executeQuery(SQL);
 
             System.out.println("The user data has been successfully deleted from the database!");
