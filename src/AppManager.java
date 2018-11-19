@@ -11,27 +11,17 @@ public class AppManager {
 
     public boolean isSetup = false;
     Loader loader;
-
     CalendarView gui;
-
     public ArrayList<Course> userCourseList = new ArrayList<Course>();
     public ArrayList<Course> groupCourseList = new ArrayList<>();
-
     public ArrayList<Integer> freeTimeList = new ArrayList<>();
-
     String userName;
     String userID;
-
     File schedulePDF;
     Connection con;
-
-
-    int minimumLength = 1;
-
-
+    int minimumTime = 1;
     int tempStartTime;
     int tempEndTime;
-
 
     /**
      * This method is called by the GUI to initialize an instance of the Loader class and proceed with identifying the user's schedule.
@@ -45,7 +35,6 @@ public class AppManager {
                 throw new IndexOutOfBoundsException("The software has already been activated, please reset it if you want to change the schedule");
             }
             loader = new Loader(file);
-            //File file = new File("C:\\Users\\Alexh\\Desktop\\EclipseWorkspace\\SE 300\\ER_SCHED_PRT.pdf");
             userCourseList = loader.getCourseList();
             userName = loader.getUserName();
             userID = loader.getUserID();
@@ -53,14 +42,10 @@ public class AppManager {
             System.out.println("The student's name is " + userName);
             for (Course x : userCourseList){
                 x.timeConvert();
-                //System.out.println("The military time is :" + x.startTime + " " + x.endTime);
             }
             isSetup = true;
 
     }
-
-
-
 
     /**
      * This method is used to start the process of resetting the software settings to default.
@@ -75,6 +60,11 @@ public class AppManager {
         System.out.println("The program status has been reset");
     }
 
+
+    /**
+     * This method uploads the user's schedule to the database.
+     * @param schedule The arraylist of user's courses to be uploaded.
+     */
     public void uploadSchedule(ArrayList<Course> schedule){
 
         try {
@@ -108,6 +98,10 @@ public class AppManager {
 
     }
 
+
+    /**
+     * This method downloads and creates course objects based on the information in the database.
+     */
     public void syncSchedule(){
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
@@ -123,25 +117,33 @@ public class AppManager {
                 groupCourseList.add(course);
             }
 
-            findCommonTime(userCourseList);
+            findCommonTime(userCourseList, minimumTime);  //TODO Change the minimum time to be determined by the user.
 
             System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
+
+            con.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
+    /**
+     * This method removes all of the given user's courses from the database.
+     */
     public void resetData(){
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
 
             Statement stmt = con.createStatement();
 
-            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID + " ";
+            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID;
             stmt.executeQuery(SQL);
 
             System.out.println("The user data has been successfully deleted from the database!");
+
+            con.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -151,7 +153,7 @@ public class AppManager {
      * This method builds a 2D array of all of the courses provided by courseList and finds all of the empty time sections that are larger than minimum length.
      * @param courseList This is the list of all the courses that are passed into the method
      */
-    public void findCommonTime(ArrayList<Course> courseList){
+    public void findCommonTime(ArrayList<Course> courseList, int minimumLength){
         int [][] timeTable = new int[7][24];
 
         for (Course course : courseList){
