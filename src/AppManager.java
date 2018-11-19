@@ -23,6 +23,7 @@ public class AppManager {
     String userID;
 
     File schedulePDF;
+    Connection con;
 
 
     int minimumLength = 1;
@@ -54,40 +55,10 @@ public class AppManager {
                 x.timeConvert();
                 //System.out.println("The military time is :" + x.startTime + " " + x.endTime);
             }
-
-            findCommonTime(userCourseList);
-
             isSetup = true;
 
     }
 
-
-    public void connectDatabase (){
-
-        int number = 1;
-
-
-
-        try {
-
-            Class<?> driverClass = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-
-            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
-
-            Statement stmt = con.createStatement();
-
-            String SQL = "SELECT TOP " + number + " * FROM dbo.nameTable";
-            ResultSet rs = stmt.executeQuery(SQL);
-
-            while (rs.next()) {
-                System.out.println(rs.getString("FirstName") + " " + rs.getString("LastName") + " " + rs.getInt("StudentID"));
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-    }
 
 
 
@@ -100,7 +71,80 @@ public class AppManager {
         userID = "";
         userName = "";
         loader.reset();
+        resetData();
         System.out.println("The program status has been reset");
+    }
+
+    public void uploadSchedule(ArrayList<Course> schedule){
+
+        try {
+
+            Class<?> driverClass = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            for(Course course : schedule){
+                String dayString = "";
+                for(String day : course.Days){
+                    dayString += " " + day;
+                }
+                String insertSQL = "INSERT INTO dbo.Courses " +
+                        "VALUES ('" + course.courseID + "', '" + course.courseString + "', '" + course.startTime + "', '" + course.endTime + "', '" + userID + "')";
+                stmt.executeUpdate(insertSQL);
+            }
+
+            System.out.println("The schedule has been successfully uploaded!");
+
+            con.close();
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+
+    }
+
+    public void syncSchedule(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            String SQL = "SELECT TOP 50 * FROM dbo.Courses";
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                Course course = new Course(rs.getString("CourseID"), rs.getString("Days"), rs.getInt("startTime"),
+                        rs.getInt("endTime"), rs.getInt("ownerID"));
+                groupCourseList.add(course);
+            }
+
+            findCommonTime(userCourseList);
+
+            System.out.println("The group schedule has been successfully downloaded!");
+            System.out.println("The loaded course list is this long: " + groupCourseList.size());
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resetData(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
+
+            Statement stmt = con.createStatement();
+
+            String SQL = "DELETE FROM dbo.Courses WHERE ownerID=" + userID + " ";
+            stmt.executeQuery(SQL);
+
+            System.out.println("The user data has been successfully deleted from the database!");
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

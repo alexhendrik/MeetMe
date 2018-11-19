@@ -30,7 +30,6 @@ public class CalendarView extends Application {
     @Override
     public void start(Stage primaryStage) {
         manager = new AppManager();
-        manager.connectDatabase();
     primaryStage.setTitle("Meet.me");
     //StackPane stk = new StackPane();
     BorderPane border = new BorderPane();
@@ -74,6 +73,8 @@ public class CalendarView extends Application {
     Button newCustomEvent = createButton("Add Custom Event");
     Button resetSchedule = createButton("Reset Schedule");
     Button loadSchedule = createButton("Load Schedule");
+    Button uploadSchedule = createButton("Upload Schedule");
+    Button downloadGroup = createButton("Download Group Schedule");
     Button exitProgram = createButton("Exit");
 
 
@@ -82,10 +83,14 @@ public class CalendarView extends Application {
         Platform.exit();
         System.exit(1);});
 
+    uploadSchedule.setOnAction(event -> {manager.uploadSchedule(manager.userCourseList);});
+
+    downloadGroup.setOnAction(event -> {manager.syncSchedule();});
+
     loadSchedule.setOnAction(event -> {selectFileLoad();});//TODO Catch index out of bounds exception
 
        try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
-    newCustomEvent.setOnAction(event -> {newEvent();});//TODO Use the constructor to create a custom event from a window
+    newCustomEvent.setOnAction(event -> {newEvent();});
 
     GridPane.setConstraints(mondayRect, 3, 1);
     GridPane.setConstraints(tuesdayRect, 4, 1);
@@ -101,21 +106,11 @@ public class CalendarView extends Application {
 
 		    
 		    
-		   /* Label passLabel = new Label("Password: ");
-		    GridPane.setConstraints(passLabel, 0, 1);
-		    
-		    TextField passInput = new TextField();
-		    passInput.setPromptText("password");
-		    GridPane.setConstraints(passInput, 1, 1);
-		    
-		    Button loginButton = new Button("Log in");
-		    GridPane.setConstraints(loginButton, 1, 2);
-		    */
+
         grid.getChildren().addAll(mondayLabel, mondayRect, tuesdayRect, wednesdayRect, thursdayRect, fridayRect, saturdayRect, sundayRect,
                 tuesdayLabel, wednesdayLabel, thursdayLabel, fridayLabel, saturdayLabel, sundayLabel);
-        // grid.setGridLinesVisible(true);
 
-    vbox.getChildren().addAll(newCustomEvent,resetSchedule,loadSchedule,exitProgram);
+    vbox.getChildren().addAll(newCustomEvent,resetSchedule,loadSchedule,uploadSchedule, downloadGroup, exitProgram);
 
     Scene scene = new Scene(border, 1366, 768);
 
