@@ -26,7 +26,7 @@ public class AppManager {
     Connection con;
 
 
-    int minimumLength = 1;
+    int minimumTime = 1;
 
 
     int tempStartTime;
@@ -132,7 +132,7 @@ public class AppManager {
                 groupCourseList.add(course);
             }
 
-            findCommonTime(userCourseList);
+            findCommonTime(userCourseList, minimumTime);  //TODO Change the minimum time to be determined by the user.
 
             System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
@@ -168,7 +168,7 @@ public class AppManager {
      * This method builds a 2D array of all of the courses provided by courseList and finds all of the empty time sections that are larger than minimum length.
      * @param courseList This is the list of all the courses that are passed into the method
      */
-    public void findCommonTime(ArrayList<Course> courseList){
+    public void findCommonTime(ArrayList<Course> courseList, int minimumLength){
         int [][] timeTable = new int[7][24];
 
         for (Course course : courseList){
