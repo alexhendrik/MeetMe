@@ -1,5 +1,4 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.io.File;
@@ -72,7 +71,7 @@ public class Loader implements DepartmentData {
 			
 			String[] splitString = loader.content.split("Instructor", 2);
 
-			loader.studentInfo = splitString[0]; //TODO This will be used for the security requirement
+			loader.studentInfo = splitString[0];
 			loader.content = splitString[1];
 
 			for (int i = 0; i < departments.length; i++) {
@@ -132,8 +131,6 @@ public class Loader implements DepartmentData {
 				index = i;
 				loader.courseList.get(i).courseString = loader.content.substring(loader.courseList.get(i).stringLocation, loader.courseList.get(i + 1).stringLocation);
 			}
-		} catch (InvalidPasswordException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ArrayIndexOutOfBoundsException e) {
