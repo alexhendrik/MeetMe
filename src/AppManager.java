@@ -136,6 +136,8 @@ public class AppManager {
 
             System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
+
+            con.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -155,6 +157,8 @@ public class AppManager {
             stmt.executeQuery(SQL);
 
             System.out.println("The user data has been successfully deleted from the database!");
+
+            con.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }

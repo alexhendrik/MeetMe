@@ -68,6 +68,7 @@ public class Loader implements DepartmentData {
 			PDDocument document = PDDocument.load(schedulePDF);
 			PDFTextStripper s = new PDFTextStripper();
 			loader.content = s.getText(document);
+			document.close();
 			
 			String[] splitString = loader.content.split("Instructor", 2);
 
