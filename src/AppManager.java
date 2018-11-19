@@ -1,8 +1,5 @@
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -97,9 +94,12 @@ public class AppManager {
                 for(String day : course.Days){
                     dayString += " " + day;
                 }
-                String insertSQL = "INSERT INTO dbo.Courses " + " VALUES (" + course.courseID + ", " + course.courseString + ", " + course.startTime + ", " + course.endTime + ", " + userID + ")";
-                stmt.executeQuery(insertSQL);
+                String insertSQL = "INSERT INTO dbo.Courses " +
+                        "VALUES ('" + course.courseID + "', '" + course.courseString + "', '" + course.startTime + "', '" + course.endTime + "', '" + userID + "')";
+                stmt.executeUpdate(insertSQL);
             }
+
+            con.close();
 
         }catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +111,24 @@ public class AppManager {
     }
 
     public void syncSchedule(){
+        try {
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
 
+            Statement stmt = con.createStatement();
+
+            String SQL = "SELECT TOP 50 * FROM dbo.Courses";
+            ResultSet rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                Course course = new Course(rs.getString("CourseID"), rs.getString("Days"), rs.getInt("startTime"),
+                        rs.getInt("endTime"), rs.getInt("ownerID"));
+                groupCourseList.add(course);
+            }
+
+            System.out.println("The loaded course list is this long: " + groupCourseList.size());
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -19,6 +19,7 @@ public class Course implements Comparable<Course> {
 	int startTime;
 	int endTime;
 	String courseString;
+	int ownerID;
 
 
 	/**
@@ -37,6 +38,18 @@ public class Course implements Comparable<Course> {
 		courseID = course;
 		courseTime = startTime + " - " + endTime;//redundant
 		Days = days;
+	}
+
+	public Course(String course, String days, int start, int end, int id){
+
+		courseID = course;
+		String[] dayArray = days.split(" ");
+		for(int i = 0; i < dayArray.length; i++){
+			Days.add(dayArray[i]);
+		}
+		startTime = start;
+		endTime = end;
+		ownerID = id;
 	}
 
 	/**
