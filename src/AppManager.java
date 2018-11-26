@@ -20,8 +20,8 @@ public class AppManager {
     File schedulePDF;
     Connection con;
     int minimumTime = 1;
-    int tempStartTime;
-    int tempEndTime;
+    private int tempStartTime;
+    private int tempEndTime;
 
     /**
      * This method is called by the GUI to initialize an instance of the Loader class and proceed with identifying the user's schedule.
@@ -31,7 +31,7 @@ public class AppManager {
 
     public void loadSchedule(File file) throws IndexOutOfBoundsException{
 
-            if (isSetup == true) {
+            if (isSetup) {
                 throw new IndexOutOfBoundsException("The software has already been activated, please reset it if you want to change the schedule");
             }
             loader = new Loader(file);
@@ -89,10 +89,8 @@ public class AppManager {
 
             con.close();
 
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         }
 
 
@@ -132,7 +130,7 @@ public class AppManager {
     /**
      * This method removes all of the given user's courses from the database.
      */
-    public void resetData(){
+    private void resetData(){
         try {
             Connection con = DriverManager.getConnection("jdbc:sqlserver://den1.mssql8.gear.host", "meetme", "Re2x?S-Omepy");
 
@@ -153,7 +151,7 @@ public class AppManager {
      * This method builds a 2D array of all of the courses provided by courseList and finds all of the empty time sections that are larger than minimum length.
      * @param courseList This is the list of all the courses that are passed into the method
      */
-    public void findCommonTime(ArrayList<Course> courseList, int minimumLength){
+    private void findCommonTime(ArrayList<Course> courseList, int minimumLength){
         int [][] timeTable = new int[7][24];
 
         for (Course course : courseList){
