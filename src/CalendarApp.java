@@ -1,3 +1,7 @@
+import com.calendarfx.model.Calendar;
+import com.calendarfx.model.Calendar.Style;
+import com.calendarfx.model.CalendarSource;
+import com.calendarfx.view.CalendarView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -5,72 +9,99 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-
 
 /**
  * This class is the primary initializing GUI class.
  */
-public class CalendarView extends Application {
+
+
+
+public class CalendarApp extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+
+        CalendarView calendarView = new CalendarView();
+
+        BorderPane borderPane = new BorderPane();
+
+        manager = new AppManager();
+
+        Calendar birthdays = new Calendar("Birthdays");
+        Calendar holidays = new Calendar("Holidays");
+
+
+
+        birthdays.setStyle(Style.STYLE1);
+        holidays.setStyle(Style.STYLE2);
+
+        CalendarSource myCalendarSource = new CalendarSource("My Calendars");
+        myCalendarSource.getCalendars().addAll(birthdays, holidays);
+
+        calendarView.getCalendarSources().addAll(myCalendarSource);
+
+        calendarView.setRequestedTime(LocalTime.now());
+
+        Thread updateTimeThread = new Thread("Calendar: Update Time Thread") {
+            @Override
+            public void run() {
+                while (true) {
+                    Platform.runLater(() -> {
+                        calendarView.setToday(LocalDate.now());
+                        calendarView.setTime(LocalTime.now());
+                    });
+
+                    try {
+                        // update every 10 seconds
+                        sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+        };
+
+        updateTimeThread.setPriority(Thread.MIN_PRIORITY);
+        updateTimeThread.setDaemon(true);
+        updateTimeThread.start();
+
+        Scene scene = new Scene(calendarView);
+        primaryStage.setTitle("Meet.Me");
+        primaryStage.setScene(scene);
+        primaryStage.setWidth(1300);
+        primaryStage.setHeight(1000);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+
+        Button newCustomEvent = createButton("Add Custom Event");
+        Button resetSchedule = createButton("Reset Schedule");
+        Button loadSchedule = createButton("Load Schedule");
+        Button uploadSchedule = createButton("Upload Schedule");
+        Button downloadGroup = createButton("Download Group Schedule");
+        Button exitProgram = createButton("Exit");
+
+
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     AppManager manager;
 
 
-    /**
-     * This is the main starting method which creates the GUI and initializes AppManager.  It serves as the starting point for the entire software.
-     * @param primaryStage  The main display screen.
-     */
-    @Override
-    public void start(Stage primaryStage) {
-        manager = new AppManager();
-    primaryStage.setTitle("Meet.me");
-    //StackPane stk = new StackPane();
-    BorderPane border = new BorderPane();
-    GridPane grid = new GridPane();
-    VBox vbox = new VBox();
-    vbox.setSpacing(10);
-    grid.setPadding(new Insets(10,10,10,10));
-    grid.setHgap(30);
-    grid.setVgap(10);
-     //TODO Tutorial messages
 
-
-    //name label
-        Label mondayLabel = createLabel("Monday");
-        Label tuesdayLabel = createLabel("Tuesday");
-        Label wednesdayLabel = createLabel("Wednesday");
-        Label thursdayLabel = createLabel("Thursday");
-        Label fridayLabel = createLabel("Friday");
-        Label saturdayLabel = createLabel("Saturday");
-        Label sundayLabel = createLabel("Sunday");
-
-    GridPane.setConstraints(mondayLabel, 3, 0);
-    GridPane.setConstraints(tuesdayLabel, 4, 0);
-    GridPane.setConstraints(wednesdayLabel, 5, 0);
-    GridPane.setConstraints(thursdayLabel, 6, 0);
-    GridPane.setConstraints(fridayLabel, 7, 0);
-    GridPane.setConstraints(saturdayLabel, 8, 0);
-    GridPane.setConstraints(sundayLabel, 9, 0);
-
-
-
-    Rectangle mondayRect =  createRect();
-        Rectangle tuesdayRect = createRect();
-        Rectangle wednesdayRect = createRect();
-        Rectangle thursdayRect = createRect();
-        Rectangle fridayRect = createRect();
-        Rectangle saturdayRect = createRect();
-        Rectangle sundayRect = createRect();
-
-
-    Button newCustomEvent = createButton("Add Custom Event");
+    /*Button newCustomEvent = createButton("Add Custom Event");
     Button resetSchedule = createButton("Reset Schedule");
     Button loadSchedule = createButton("Load Schedule");
     Button uploadSchedule = createButton("Upload Schedule");
@@ -90,75 +121,11 @@ public class CalendarView extends Application {
     loadSchedule.setOnAction(event -> {selectFileLoad();});//TODO Catch index out of bounds exception
 
        try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
-    newCustomEvent.setOnAction(event -> {newEvent();});
-
-    GridPane.setConstraints(mondayRect, 3, 1);
-    GridPane.setConstraints(tuesdayRect, 4, 1);
-    GridPane.setConstraints(wednesdayRect, 5, 1);
-    GridPane.setConstraints(thursdayRect, 6, 1);
-    GridPane.setConstraints(fridayRect, 7, 1);
-    GridPane.setConstraints(saturdayRect, 8, 1);
-    GridPane.setConstraints(sundayRect, 9, 1);
-
-
-    border.setCenter(grid);
-    border.setLeft(vbox);
-
-		    
-		    
-
-        grid.getChildren().addAll(mondayLabel, mondayRect, tuesdayRect, wednesdayRect, thursdayRect, fridayRect, saturdayRect, sundayRect,
-                tuesdayLabel, wednesdayLabel, thursdayLabel, fridayLabel, saturdayLabel, sundayLabel);
-
-    vbox.getChildren().addAll(newCustomEvent,resetSchedule,loadSchedule,uploadSchedule, downloadGroup, exitProgram);
-
-    Scene scene = new Scene(border, 1366, 768);
-
-    primaryStage.setScene(scene);
-        primaryStage.show();
+    newCustomEvent.setOnAction(event -> {newEvent();});*/
 
 
 
 
-    }
-
-
-    /**
-     * This is a generic constructor method for the rectangles in the GUI.
-     * @return This returns the created rectangle.
-     */
-
-    public Rectangle createRect()	{
-
-        Rectangle rect = new Rectangle();
-        rect.setWidth(200);
-        rect.setHeight(900);
-        rect.setFill(Color.WHITE);
-        return rect;
-
-
-
-
-    }
-
-    /**
-     * This is a generic constructor method for a label.
-     * @param day This attribute is used for the label text.
-     * @return This returns the created label.
-     */
-    public Label createLabel(String day) {
-
-        Label label = new Label(day);
-        label.setFont(new Font("Arial", 40));
-
-        return label;
-    }
-
-    /**
-     * Generic constructor.
-     */
-    public CalendarView(){
-    }
 
     /**
      * This method creates the file selection window and passes it to the AppManager.
@@ -306,6 +273,8 @@ public class CalendarView extends Application {
 
 
     }
+
+
 
 
 

@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +19,18 @@ public class Course implements Comparable<Course> {
 	String courseDays = "";
 	int stringLocation;
 	int startTime;
+
+	LocalTime startingTime;
+	LocalTime endingTime;
+
+	LocalDate mondayDate = LocalDate.parse("2018-09-03");
+	LocalDate tuesdayDate = LocalDate.parse("2018-09-03");;
+	LocalDate wednesdayDate = LocalDate.parse("2018-09-03");;
+	LocalDate thursdayDate = LocalDate.parse("2018-09-03");;
+	LocalDate fridayDate = LocalDate.parse("2018-09-03");;
+	LocalDate saturdayDate = LocalDate.parse("2018-09-03");;
+	LocalDate sundayDate = LocalDate.parse("2018-09-03");;
+
 	int endTime;
 	String courseString;
 	int ownerID;
@@ -38,6 +52,7 @@ public class Course implements Comparable<Course> {
 		courseID = course;
 		courseTime = startTime + " - " + endTime;//redundant
 		Days = days;
+		startingTime =
 	}
 
 

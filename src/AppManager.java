@@ -1,3 +1,5 @@
+import com.calendarfx.view.CalendarView;
+
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,6 +46,10 @@ public class AppManager {
                 x.timeConvert();
             }
             isSetup = true;
+
+            /*for (Course x : userCourseList){
+                Interval class = new Interval(x.Time.get(0), x.Time.get(1));
+            }*/
 
     }
 
