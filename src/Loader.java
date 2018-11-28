@@ -1,3 +1,4 @@
+import com.calendarfx.model.Interval;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -203,6 +204,8 @@ public class Loader implements DepartmentData {
         loader.char2 = length + 1;
         loader.char3 = length + 2;
         loader.char4 = length + 3;
+
+        Interval interval = new Interval();
 
     }
 

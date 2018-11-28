@@ -47,6 +47,10 @@ public class AppManager {
             }
             isSetup = true;
 
+            /*for (Course x : userCourseList){
+                Interval class = new Interval(x.Time.get(0), x.Time.get(1));
+            }*/
+
     }
 
     /**
