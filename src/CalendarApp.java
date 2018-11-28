@@ -1,6 +1,8 @@
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
+import com.calendarfx.model.Interval;
 import com.calendarfx.view.CalendarView;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -30,16 +33,21 @@ public class CalendarApp extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+
         CalendarView calendarView = new CalendarView();
 
         BorderPane borderPane = new BorderPane();
 
         manager = new AppManager();
 
+        Interval testInterval = new Interval(LocalDate.parse("2018-11-20"), LocalTime.parse("0900",timeFormatter), LocalDate.parse("2018-11-20"), LocalTime.parse("1000", timeFormatter));
+
         Calendar birthdays = new Calendar("Birthdays");
         Calendar holidays = new Calendar("Holidays");
 
-
+        Entry<String> dentistAppointment = new Entry<>("Dentist", testInterval);
+        holidays.addEntry(dentistAppointment);
 
         birthdays.setStyle(Style.STYLE1);
         holidays.setStyle(Style.STYLE2);
