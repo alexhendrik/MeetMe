@@ -9,7 +9,6 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -29,31 +28,30 @@ import java.util.ArrayList;
 
 public class CalendarApp extends Application {
 
+    DateTimeFormatter timeFormatter;
+    Calendar personalSched;
+    Calendar groupSched;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+        timeFormatter = DateTimeFormatter.ofPattern("HHmm");
 
         CalendarView calendarView = new CalendarView();
 
-        BorderPane borderPane = new BorderPane();
+        manager = new AppManager(this);
 
-        manager = new AppManager();
 
-        Interval testInterval = new Interval(LocalDate.parse("2018-11-20"), LocalTime.parse("0900",timeFormatter), LocalDate.parse("2018-11-20"), LocalTime.parse("1000", timeFormatter));
+        personalSched = new Calendar("Personal Schedule");
+        groupSched = new Calendar("Group Schedule");
 
-        Calendar birthdays = new Calendar("Birthdays");
-        Calendar holidays = new Calendar("Holidays");
 
-        Entry<String> dentistAppointment = new Entry<>("Dentist", testInterval);
-        holidays.addEntry(dentistAppointment);
+        personalSched.setStyle(Style.STYLE1);
+        groupSched.setStyle(Style.STYLE2);
 
-        birthdays.setStyle(Style.STYLE1);
-        holidays.setStyle(Style.STYLE2);
-
-        CalendarSource myCalendarSource = new CalendarSource("My Calendars");
-        myCalendarSource.getCalendars().addAll(birthdays, holidays);
+        CalendarSource myCalendarSource = new CalendarSource("My Schedules");
+        //myCalendarSource.getCalendars().addAll(birthdays);
 
         calendarView.getCalendarSources().addAll(myCalendarSource);
 
@@ -109,7 +107,8 @@ public class CalendarApp extends Application {
 
 
 
-    /*Button newCustomEvent = createButton("Add Custom Event");
+
+    Button newCustomEvent = createButton("Add Custom Event");
     Button resetSchedule = createButton("Reset Schedule");
     Button loadSchedule = createButton("Load Schedule");
     Button uploadSchedule = createButton("Upload Schedule");
@@ -126,14 +125,44 @@ public class CalendarApp extends Application {
 
     downloadGroup.setOnAction(event -> {manager.syncSchedule();});
 
-    loadSchedule.setOnAction(event -> {selectFileLoad();});//TODO Catch index out of bounds exception
+    loadSchedule.setOnAction(event -> {selectFileLoad();
+                            myCalendarSource.getCalendars.addAll(personalSched);
+    });//TODO Catch index out of bounds exception
 
        try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
-    newCustomEvent.setOnAction(event -> {newEvent();});*/
+    newCustomEvent.setOnAction(event -> {newEvent();});
 
 
 
+    public void displayCourse(Course course){
+        String recurrenceRule = "RRULE:FREQ=WEEKLY;BYDAY=";
 
+
+        Interval testInterval = new Interval(LocalDate.parse("2018-09-20"), LocalTime.parse(String.valueOf(course.startTime),timeFormatter), LocalDate.parse("2018-09-20"), LocalTime.parse(String.valueOf(course.endTime), timeFormatter));
+        Entry<String> courseEvent = new Entry<>(course.courseID, testInterval);
+
+        if (course.courseDays.contains("Monday")){
+            recurrenceRule += " MO,";
+        }
+        if (course.courseDays.contains("Tuesday")){
+            recurrenceRule += " TU,";
+
+        }
+        if (course.courseDays.contains("Wednesday")){
+            recurrenceRule += " WE,";
+
+        }
+        if (course.courseDays.contains("Thursday")){
+            recurrenceRule += " TH,";
+
+        }
+        if (course.courseDays.contains("Friday")){
+            recurrenceRule += " FR";
+
+        }
+        personalSched.addEntries(courseEvent);
+        courseEvent.setRecurrenceRule(recurrenceRule);
+    }
 
     /**
      * This method creates the file selection window and passes it to the AppManager.
