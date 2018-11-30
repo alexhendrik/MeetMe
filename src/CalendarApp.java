@@ -57,6 +57,35 @@ public class CalendarApp extends Application {
 
         calendarView.setRequestedTime(LocalTime.now());
 
+        Button newCustomEvent = createButton("Add Custom Event");
+        Button resetSchedule = createButton("Reset Schedule");
+        Button loadSchedule = createButton("Load Schedule");
+        Button uploadSchedule = createButton("Upload Schedule");
+        Button downloadGroup = createButton("Download Group Schedule");
+        Button exitProgram = createButton("Exit");
+
+
+
+        exitProgram.setOnAction(e -> {
+            Platform.exit();
+            System.exit(1);});
+
+        uploadSchedule.setOnAction(event -> {manager.uploadSchedule(manager.userCourseList);});
+
+        downloadGroup.setOnAction(event -> {manager.syncSchedule();});
+
+        try{loadSchedule.setOnAction(event -> {selectFileLoad();
+            myCalendarSource.getCalendars().addAll(personalSched);
+        });} catch (Exception e) { e.printStackTrace();}//TODO Catch index out of bounds exception
+
+        try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
+        newCustomEvent.setOnAction(event -> {newEvent();});
+
+
+
+
+
+
         Thread updateTimeThread = new Thread("Calendar: Update Time Thread") {
             @Override
             public void run() {
@@ -89,12 +118,6 @@ public class CalendarApp extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        Button newCustomEvent = createButton("Add Custom Event");
-        Button resetSchedule = createButton("Reset Schedule");
-        Button loadSchedule = createButton("Load Schedule");
-        Button uploadSchedule = createButton("Upload Schedule");
-        Button downloadGroup = createButton("Download Group Schedule");
-        Button exitProgram = createButton("Exit");
 
 
     }
@@ -105,32 +128,6 @@ public class CalendarApp extends Application {
 
     AppManager manager;
 
-
-
-
-    Button newCustomEvent = createButton("Add Custom Event");
-    Button resetSchedule = createButton("Reset Schedule");
-    Button loadSchedule = createButton("Load Schedule");
-    Button uploadSchedule = createButton("Upload Schedule");
-    Button downloadGroup = createButton("Download Group Schedule");
-    Button exitProgram = createButton("Exit");
-
-
-
-    exitProgram.setOnAction(e -> {
-        Platform.exit();
-        System.exit(1);});
-
-    uploadSchedule.setOnAction(event -> {manager.uploadSchedule(manager.userCourseList);});
-
-    downloadGroup.setOnAction(event -> {manager.syncSchedule();});
-
-    loadSchedule.setOnAction(event -> {selectFileLoad();
-                            myCalendarSource.getCalendars.addAll(personalSched);
-    });//TODO Catch index out of bounds exception
-
-       try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
-    newCustomEvent.setOnAction(event -> {newEvent();});
 
 
 
