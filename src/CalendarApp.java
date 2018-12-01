@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -48,8 +49,20 @@ public class CalendarApp extends Application {
         Field buttonField = CalendarViewSkin.class.getDeclaredField("addCalendarButton");
         //CalendarViewSkin.class.getDeclaredField("addCalendarButton").setAccessible(true);
         buttonField.setAccessible(true);
-        //addCalendarButton = (Button) CalendarViewSkin.class.getDeclaredField("addCalendarButton").get(this);
-        addButton = buttonField;
+        //addCalendarButton = (Button) CalendarViewSkin.class.getDeclaredField("addCalendarButton").get();//TODO Fix this mess
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         manager = new AppManager(this);
 
@@ -74,6 +87,8 @@ public class CalendarApp extends Application {
         Button downloadGroup = createButton("Download Group Schedule");
         Button exitProgram = createButton("Exit");
 
+        Method buildBarBoxField = CalendarViewSkin.class.getDeclaredMethod("buildLeftToolBarBox");
+
 
 
         exitProgram.setOnAction(e -> {
@@ -94,7 +109,8 @@ public class CalendarApp extends Application {
         try{ resetSchedule.setOnAction(event -> {manager.resetState();
         myCalendarSource.getCalendars().removeAll(groupSched, personalSched);
         }); } catch (NullPointerException e) {}
-        addCalendarButton.setOnAction(event -> {newEvent();});//TODO change the button assignment
+
+        //addCalendarButton.setOnAction(event -> {newEvent();});//TODO change the button assignment
 
 
 
