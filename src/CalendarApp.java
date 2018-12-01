@@ -4,6 +4,7 @@ import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.Interval;
 import com.calendarfx.view.CalendarView;
+import impl.com.calendarfx.view.CalendarViewSkin;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -15,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +33,7 @@ public class CalendarApp extends Application {
     DateTimeFormatter timeFormatter;
     Calendar personalSched;
     Calendar groupSched;
+    Button addButton;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,6 +42,14 @@ public class CalendarApp extends Application {
         timeFormatter = DateTimeFormatter.ofPattern("HHmm");
 
         CalendarView calendarView = new CalendarView();
+
+
+        //Class calendarViewSkin = Class.forName("CalendarViewSkin");
+        Field buttonField = CalendarViewSkin.class.getDeclaredField("addCalendarButton");
+        //CalendarViewSkin.class.getDeclaredField("addCalendarButton").setAccessible(true);
+        buttonField.setAccessible(true);
+        //addCalendarButton = (Button) CalendarViewSkin.class.getDeclaredField("addCalendarButton").get(this);
+        addButton = buttonField;
 
         manager = new AppManager(this);
 
@@ -51,7 +62,6 @@ public class CalendarApp extends Application {
         groupSched.setStyle(Style.STYLE2);
 
         CalendarSource myCalendarSource = new CalendarSource("My Schedules");
-        //myCalendarSource.getCalendars().addAll(birthdays);
 
         calendarView.getCalendarSources().addAll(myCalendarSource);
 
@@ -72,14 +82,19 @@ public class CalendarApp extends Application {
 
         uploadSchedule.setOnAction(event -> {manager.uploadSchedule(manager.userCourseList);});
 
-        downloadGroup.setOnAction(event -> {manager.syncSchedule();});
+        downloadGroup.setOnAction(event -> {manager.syncSchedule();
+        myCalendarSource.getCalendars().removeAll(personalSched);
+        myCalendarSource.getCalendars().addAll(groupSched);
+        });
 
         try{loadSchedule.setOnAction(event -> {selectFileLoad();
             myCalendarSource.getCalendars().addAll(personalSched);
-        });} catch (Exception e) { e.printStackTrace();}//TODO Catch index out of bounds exception
+        });} catch (Exception e) { e.printStackTrace();}
 
-        try{ resetSchedule.setOnAction(event -> {manager.resetState();}); } catch (NullPointerException e) {}
-        newCustomEvent.setOnAction(event -> {newEvent();});
+        try{ resetSchedule.setOnAction(event -> {manager.resetState();
+        myCalendarSource.getCalendars().removeAll(groupSched, personalSched);
+        }); } catch (NullPointerException e) {}
+        addCalendarButton.setOnAction(event -> {newEvent();});//TODO change the button assignment
 
 
 
@@ -131,7 +146,7 @@ public class CalendarApp extends Application {
 
 
 
-    public void displayCourse(Course course){
+    public void displayCourse(Course course, String decider){
         String recurrenceRule = "RRULE:FREQ=WEEKLY;BYDAY=";
 
 
@@ -157,8 +172,17 @@ public class CalendarApp extends Application {
             recurrenceRule += " FR";
 
         }
-        personalSched.addEntries(courseEvent);
+
+
         courseEvent.setRecurrenceRule(recurrenceRule);
+
+
+        if (decider == "personal"){
+            personalSched.addEntries(courseEvent);
+        } else if (decider == "group"){
+            groupSched.addEntries(courseEvent);
+        }
+
     }
 
     /**
@@ -181,7 +205,7 @@ public class CalendarApp extends Application {
      * This is an unused method for showing an error dialog if the user tries to initialize the schedule parser twice.
      */
 
-    public void showSetupError() {
+    public void showSetupError() { //TODO Use this
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Illegal Action");
@@ -210,7 +234,7 @@ public class CalendarApp extends Application {
      * This method is called from the GUI to open the dialog menu to select the parameters of a new custom event.  The custom event is then added to the list of courses for the given user.
      */
 
-    public void newEvent(){
+    public void newEvent(){  //TODO Fix it to add the event to the schedule
         GridPane customPane = new GridPane();
         customPane.setVgap(10);
         Stage customStage = new Stage();

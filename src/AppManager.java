@@ -49,7 +49,7 @@ public class AppManager {
             isSetup = true;
 
             for (Course x : userCourseList){
-                calendarApp.displayCourse(x);
+                calendarApp.displayCourse(x, "personal");
             }
 
 
@@ -130,6 +130,10 @@ public class AppManager {
             }
 
             findCommonTime(userCourseList, minimumTime);  //TODO Change the minimum time to be determined by the user.
+
+            for (Course x : groupCourseList){
+                calendarApp.displayCourse(x, "group");
+            }
 
             System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
