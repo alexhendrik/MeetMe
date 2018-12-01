@@ -52,7 +52,8 @@ public class Course implements Comparable<Course> {
 		courseID = course;
 		courseTime = startTime + " - " + endTime;//redundant
 		Days = days;
-		startingTime =
+		startingTime = LocalTime.parse(startTime);
+		endingTime = LocalTime.parse(endTime);
 	}
 
 

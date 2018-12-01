@@ -24,6 +24,7 @@ public class AppManager {
     int minimumTime = 1;
     private int tempStartTime;
     private int tempEndTime;
+    CalendarApp calendarApp;
 
     /**
      * This method is called by the GUI to initialize an instance of the Loader class and proceed with identifying the user's schedule.
@@ -47,10 +48,17 @@ public class AppManager {
             }
             isSetup = true;
 
-            /*for (Course x : userCourseList){
-                Interval class = new Interval(x.Time.get(0), x.Time.get(1));
-            }*/
+            for (Course x : userCourseList){
+                calendarApp.displayCourse(x, "personal");
+            }
 
+
+
+    }
+
+
+    public AppManager(CalendarApp calendarApp){
+        this.calendarApp = calendarApp;
     }
 
     /**
@@ -122,6 +130,10 @@ public class AppManager {
             }
 
             findCommonTime(userCourseList, minimumTime);  //TODO Change the minimum time to be determined by the user.
+
+            for (Course x : groupCourseList){
+                calendarApp.displayCourse(x, "group");
+            }
 
             System.out.println("The group schedule has been successfully downloaded!");
             System.out.println("The loaded course list is this long: " + groupCourseList.size());
